@@ -24,14 +24,14 @@ public class RobberBehaviour : MonoBehaviour
 
         tree = new BehaviourTree();
         Sequence steal = new Sequence("Steal Something");
-        Leaf goToDiamond = new Leaf("Go To Diamond",GoToDiamond);
-        Leaf goToBackDoor = new Leaf("Go to backdoor", GoToBackDoor);
         Leaf goToFrontDoor = new Leaf("Go To FrontDoor", GoToFrontDoor);
+        Leaf goToBackDoor = new Leaf("Go to backdoor", GoToBackDoor);
+        Leaf goToDiamond = new Leaf("Go To Diamond",GoToDiamond);
         Leaf goToVan = new Leaf("Go To Van",GoToVan);
         Selector opendoor = new Selector("Open Door");
 
-        opendoor.AddChild(goToBackDoor);
         opendoor.AddChild(goToFrontDoor);
+        opendoor.AddChild(goToBackDoor);
 
         steal.AddChild(opendoor);
         steal.AddChild(goToDiamond);
@@ -43,22 +43,49 @@ public class RobberBehaviour : MonoBehaviour
 
     private Node.Status GoToFrontDoor()
     {
-        return GoToLocation(frontDoor.transform.position);
+        return GoToDoor(frontDoor);
     }
 
     private Node.Status GoToBackDoor()
     {
-        return GoToLocation(backDoor.transform.position);
+        return GoToDoor(backDoor);
     }
 
     public Node.Status GoToDiamond()
     {
-        return GoToLocation(diamond.transform.position);
+        return StealSomething(diamond);
     }
 
     public Node.Status GoToVan()
     {
         return GoToLocation(van.transform.position);
+    }
+
+    public Node.Status GoToDoor(GameObject door)
+    {
+        Node.Status s = GoToLocation(door.transform.position);
+        if (s == Node.Status.SUCCESS)
+        {
+            if (!door.GetComponent<Lock>().isLocked)
+            {
+                door.SetActive(false);
+                return Node.Status.SUCCESS;
+            }
+            return Node.Status.FAILURE;
+        }
+        else
+            return s;
+    }
+
+    public Node.Status StealSomething(GameObject stuff)
+    {
+        Node.Status s = GoToLocation(stuff.transform.position);
+        if(s == Node.Status.SUCCESS)
+        {
+            //stuff.SetActive(false);
+            stuff.transform.parent = this.gameObject.transform;
+        }
+        return s;
     }
 
     Node.Status GoToLocation(Vector3 destination)

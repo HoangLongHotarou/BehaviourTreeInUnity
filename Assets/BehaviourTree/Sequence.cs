@@ -18,7 +18,8 @@ public class Sequence : Node
     {
         Status childstatust = children[currentChild].Process();
         Debug.Log(childstatust);
-        if(childstatust == Status.RUNNING)
+        Debug.Log(currentChild);
+        if (childstatust == Status.RUNNING)
             return Status.RUNNING;
         if (childstatust == Status.FAILURE)
             return childstatust;

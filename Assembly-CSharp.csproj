@@ -58,8 +58,9 @@
     <Compile Include="Assets\Models\Rotate.cs" />
     <Compile Include="Assets\BehaviourTree\BehaviourTree.cs" />
     <Compile Include="Assets\BehaviourTree\Leaf.cs" />
-    <Compile Include="Assets\BehaviourTree\RobberBehaviour.cs" />
     <Compile Include="Assets\BehaviourTree\Selector.cs" />
+    <Compile Include="Assets\BehaviourTree\RobberBehaviour.cs" />
+    <Compile Include="Assets\BehaviourTree\Lock.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">
